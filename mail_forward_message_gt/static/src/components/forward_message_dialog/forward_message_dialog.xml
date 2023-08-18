@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mail.ForwardMessageDialog" owl="1">
+        <Dialog title="title" contentClass="'o_ForwardMessageDialog'"
+                t-on-dialog-closed="messageActionList and messageActionList.onForwardMessageDialogClosed"
+                t-ref="dialog">
+            <t t-if="messageActionList">
+                <p>Choose a channel/user to forward:</p>
+                <input class="o_input" type="text" placeholder="Search for channel/user..."
+                       t-on-input="onInput" t-ref="input"/>
+                <p t-if="state.threads.length" class="font-weight-bold my-3">Channels</p>
+                <div t-if="state.threads.length" class="row">
+                    <t t-foreach="state.threads" t-as="thread" t-key="thread">
+                        <div class="col-12">
+                            <div class="o_DiscussSidebarCategoryItem o_DiscussSidebarCategory_item">
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_avatar">
+                                    <div class="o_DiscussSidebarCategoryItem_imageContainer">
+                                        <img t-attf-src="/web/image/mail.channel/{{ thread.id }}/avatar_128?unique={{ thread.avatarCacheKey }}"
+                                             alt="Thread Image" class="o_DiscussSidebarCategoryItem_image rounded-circle"/>
+                                    </div>
+                                </div>
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_name text-truncate">
+                                    <span class="ml-3" t-esc="thread.name"/>
+                                </div>
+                                <button type="button" class="o_btn_forward btn btn-sm btn-primary"
+                                        t-att-data-channel_id="thread.id"
+                                        t-on-click="onClickForward">Send</button>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <p t-if="state.partners.length" class="font-weight-bold my-3">People</p>
+                <div t-if="state.partners.length" class="row">
+                    <t t-foreach="state.partners" t-as="partner" t-key="partner">
+                        <div class="col-12">
+                            <div class="o_DiscussSidebarCategoryItem o_DiscussSidebarCategory_item">
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_avatar">
+                                    <div class="o_DiscussSidebarCategoryItem_imageContainer">
+                                        <img t-att-src="partner.avatarUrl"
+                                             alt="Thread Image" class="o_DiscussSidebarCategoryItem_image rounded-circle"/>
+                                        <div t-if="partner.im_status and partner.im_status !== 'im_partner'"
+                                             class="o_ThreadIcon o_DiscussSidebarCategoryItem_threadIcon">
+                                            <span class="o_PartnerImStatusIcon fa-stack"
+                                                t-att-class="{
+                                                    'o-away': partner and partner.im_status === 'away',
+                                                    'o-bot': partner and partner.id === 1,
+                                                    'o-offline': partner and partner.im_status === 'offline',
+                                                    'o-online': partner and partner.im_status === 'online',
+                                                }">
+                                                <t t-if="partner" name="rootCondition">
+                                                    <t t-if="partner.im_status === 'online'">
+                                                        <i class="o_PartnerImStatusIcon_icon o-online fa fa-circle fa-stack-1x" title="Online" role="img" aria-label="User is online"/>
+                                                    </t>
+                                                    <t t-if="partner.im_status === 'away'">
+                                                        <i class="o_PartnerImStatusIcon_icon o-away fa fa-circle fa-stack-1x" title="Idle" role="img" aria-label="User is idle"/>
+                                                    </t>
+                                                    <t t-if="partner.im_status === 'offline'">
+                                                        <i class="o_PartnerImStatusIcon_icon o-offline fa fa-circle-o fa-stack-1x" title="Offline" role="img" aria-label="User is offline"/>
+                                                    </t>
+                                                    <t t-if="partner.id === 1">
+                                                        <i class="o_PartnerImStatusIcon_icon o-bot fa fa-heart fa-stack-1x" title="Bot" role="img" aria-label="User is a bot"/>
+                                                    </t>
+                                                </t>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_name text-truncate">
+                                    <span class="ml-3" t-esc="partner.display_name"/>
+                                    <span t-if="partner.email" class="text-muted font-italic ml-3">
+                                        (<t t-esc="partner.email"/>)
+                                    </span>
+                                </div>
+                                <button type="button" class="o_btn_forward btn btn-sm btn-primary"
+                                        t-att-data-partner_id="partner.id"
+                                        t-on-click="onClickForward">Send</button>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <t t-set-slot="buttons">
+                    <button class="btn btn-secondary" t-on-click="dialogRef.comp._close()">Cancel</button>
+                </t>
+            </t>
+        </Dialog>
+    </t>
+</templates>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="mail.Message" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_Message_prettyBody')]" position="attributes">
+            <attribute name="t-if">!messageView.message.isForward</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_Message_prettyBody')]" position="after">
+            <blockquote t-else="">
+                <div class="o_Message_prettyBody" t-ref="prettyBody"/>
+                <footer class="blockquote-footer mt-1">
+                    By <t t-esc="messageView.message.srcAuthor"/> at <t t-esc="messageView.message.srcDate"/>
+                </footer>
+            </blockquote>
+        </xpath>
+    </t>
+
+</templates>
