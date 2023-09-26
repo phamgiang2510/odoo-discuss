@@ -13,14 +13,12 @@
     'demo': [],
     'assets': {
         'mail.assets_discuss_public': [
-            'mail_forward_message_gt/static/src/*/*/*',
+            'mail_forward_message_gt/static/src/components/*/*',
+            'mail_forward_message_gt/static/src/models/*',
         ],
         'web.assets_backend': [
-            'mail_forward_message_gt/static/src/*/*/*.scss',
-            'mail_forward_message_gt/static/src/*/*/*.js',
-        ],
-        'web.assets_qweb': [
-            'mail_forward_message_gt/static/src/*/*/*.xml',
+            'mail_forward_message_gt/static/src/components/*/*',
+            'mail_forward_message_gt/static/src/models/*',
         ],
     },
     'images': ['static/description/banner.png'],

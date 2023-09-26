@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mail.ForwardMessageConfirm" owl="1">
+        <t t-if="forwardMessageConfirmView">
+            <div class="o_ForwardMessageConfirm card bg-view" t-attf-class="{{ className }}" t-ref="root">
+                <h4 class="m-3">Forward</h4>
+                <hr class="mt-0 mb-3"/>
+                <p class="mx-3 mb-3">Choose a channel/user to forward:</p>
+                <input class="form-control mx-3 mb-3" type="text" placeholder="Search for channel/user..."
+                       t-on-input="onInput" t-ref="input"/>
+                <p t-if="state.threads.length" class="font-weight-bold m-3">Channels</p>
+                <div t-if="state.threads.length" class="row">
+                    <t t-foreach="state.threads" t-as="thread" t-key="thread">
+                        <div class="col-12">
+                            <div class="o_DiscussSidebarCategoryItem btn d-flex align-items-center w-100 px-0 py-2 border-0 rounded-0 fw-normal text-reset o_DiscussSidebarCategory_item">
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_avatar ms-4">
+                                    <div class="o_DiscussSidebarCategoryItem_imageContainer position-relative d-flex">
+                                        <img t-attf-src="/web/image/mail.channel/{{ thread.id }}/avatar_128?unique={{ thread.avatarCacheKey }}"
+                                             alt="Thread Image" class="o_DiscussSidebarCategoryItem_image w-100 h-100 rounded-circle"/>
+                                    </div>
+                                </div>
+                                <span class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_name ms-3 me-2 text-truncate"
+                                      t-esc="thread.name"/>
+                                <button type="button" class="o_btn_forward btn btn-sm btn-primary ms-auto me-4"
+                                        t-att-data-channel_id="thread.id"
+                                        t-on-click="forwardMessageConfirmView.onClickForward">Send</button>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <p t-if="state.partners.length" class="font-weight-bold m-3">People</p>
+                <div t-if="state.partners.length" class="row">
+                    <t t-foreach="state.partners" t-as="partner" t-key="partner">
+                        <div class="col-12">
+                            <div class="o_DiscussSidebarCategoryItem btn d-flex align-items-center w-100 px-0 py-2 border-0 rounded-0 fw-normal text-reset o_DiscussSidebarCategory_item">
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_avatar ms-4">
+                                    <div class="o_DiscussSidebarCategoryItem_imageContainer position-relative d-flex">
+                                        <img t-att-src="partner.avatarUrl"
+                                             alt="Partner Image" class="o_DiscussSidebarCategoryItem_image w-100 h-100 rounded-circle"/>
+                                        <div class="o_ThreadIcon d-flex justify-content-center flex-shrink-0 o_DiscussSidebarCategoryItem_threadIcon position-absolute bottom-0 end-0 align-items-center rounded-circle bg-100">
+                                            <t t-if="partner.im_status === 'online'">
+                                                <div class="o_ThreadIcon_online fa fa-fw fa-circle" title="Online"/>
+                                            </t>
+                                            <t t-elif="partner.im_status === 'offline'">
+                                                <div class="o_ThreadIcon_offline fa fa-fw fa-circle-o" title="Offline"/>
+                                            </t>
+                                            <t t-elif="partner.im_status === 'away'">
+                                                <div class="o_ThreadIcon_away fa fa-fw fa-circle text-warning" title="Away"/>
+                                            </t>
+                                            <t t-elif="partner === messaging.partnerRoot">
+                                                <div class="o_ThreadIcon_online fa fa-fw fa-heart" title="Bot"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_name ms-3 me-2 text-truncate">
+                                    <span t-esc="partner.nameOrDisplayName"/>
+                                    <span t-if="partner.email" class="text-muted font-italic ms-3">
+                                        (<t t-esc="partner.email"/>)
+                                    </span>
+                                </div>
+                                <button type="button" class="o_btn_forward btn btn-sm btn-primary ms-auto me-4"
+                                        t-att-data-partner_id="partner.id"
+                                        t-on-click="forwardMessageConfirmView.onClickForward">Send</button>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <hr class="my-3"/>
+                <div class="mx-3 mb-3">
+                    <button class="btn btn-secondary" t-on-click="forwardMessageConfirmView.onClickCancel">Cancel</button>
+                </div>
+            </div>
+        </t>
+    </t>
+</templates>
