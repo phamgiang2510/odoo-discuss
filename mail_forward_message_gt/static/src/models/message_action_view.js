@@ -10,7 +10,7 @@ registerPatch({
          * @override
          */
         onClick(ev) {
-            this._super();
+            this._super(ev);
             if (this.messageAction.messageActionListOwner === this.messageAction.messageActionListOwnerAsForward) {
                 this.update({forwardConfirmDialog: {}});
             }
