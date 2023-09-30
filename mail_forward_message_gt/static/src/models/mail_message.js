@@ -2,7 +2,7 @@
 
 import {registerPatch} from '@mail/model/model_core';
 import {attr} from '@mail/model/model_field';
-import {formatDateTime, parseDateTime} from "@web/core/l10n/dates";
+import { getLangDatetimeFormat, str_to_datetime } from 'web.time';
 
 registerPatch({
     name: 'Message',
@@ -19,7 +19,7 @@ registerPatch({
                 data2.srcAuthor = data.src_author;
             }
             if ('src_date' in data) {
-                data2.srcDate = formatDateTime(parseDateTime(data.src_date), {timezone: true});
+                data2.srcDate = moment(str_to_datetime(data.src_date)).format(getLangDatetimeFormat());
             }
             return data2;
         },
